@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   data-name="ICON BLACK"
+   viewBox="0 0 28 21"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="noun-heart-pulse-2831436.svg"
+   width="28"
+   height="21"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="20.525"
+     inkscape:cx="16.004872"
+     inkscape:cy="12.204629"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <title
+     id="title1">heart w- pulse</title>
+  <path
+     d="m 27.051157,9.7996346 h -2.74 a 6,6 0 0 0 -0.85,-7.5 6,6 0 0 0 -8.57,0 l -0.84,0.84 -0.84,-0.84 a 6.06,6.06 0 0 0 -9.4199999,7.5 h -2.74 a 0.5000002,0.5000002 0 0 0 0,1.0000004 h 3.52 a 0.46,0.46 0 0 0 0.07,0.07 l 9.0599999,9.06 a 0.48,0.48 0 0 0 0.7,0 l 9.06,-9.06 a 0.46,0.46 0 0 0 0.07,-0.07 h 3.52 a 0.5000002,0.5000002 0 0 0 0,-1.0000004 z m -23.1899999,-3.22 a 5.06,5.06 0 0 1 8.6399999,-3.57 l 1.2,1.19 a 0.5,0.5 0 0 0 0.7,0 l 1.2,-1.19 a 5.040005,5.040005 0 0 1 7.45,6.79 h -3.13 l -1.31,-1.68 a 0.53,0.53 0 0 0 -0.4,-0.19 0.48,0.48 0 0 0 -0.4,0.2 l -3.71,5.1700004 -3.91,-6.7100004 a 0.5,0.5 0 0 0 -0.3999999,-0.25 0.48,0.48 0 0 0 -0.42,0.19 l -2.6,3.27 h -1.72 a 5,5 0 0 1 -1.19,-3.22 z m 10.1899999,12.2900004 -8.0699999,-8.07 h 1.07 a 0.49,0.49 0 0 0 0.39,-0.19 l 2.3,-2.9200004 3.9199999,6.7400004 a 0.48,0.48 0 0 0 0.41,0.24 v 0 a 0.49,0.49 0 0 0 0.4,-0.21 l 3.76,-5.1600004 1.05,1.3500004 a 0.51,0.51 0 0 0 0.4,0.19 h 2.44 z"
+     id="path1" />
+  <text
+     x="0"
+     y="47"
+     fill="#000000"
+     font-size="5px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text1">Created by Philipp Petzka</text>
+  <text
+     x="0"
+     y="52"
+     fill="#000000"
+     font-size="5px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text2">from the Noun Project</text>
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>heart w- pulse</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

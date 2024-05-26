@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   data-name="Layer 1"
+   viewBox="0 0 81 89"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="test.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   width="81"
+   height="89"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3">
+      <rect
+         style="opacity:0.5;fill:#000000;stroke-width:0.986533"
+         id="rect3"
+         width="88.974327"
+         height="93.144997"
+         x="6.6036692"
+         y="2.4582584" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath4">
+      <rect
+         style="opacity:0.5;fill:#000000;stroke-width:0.986533"
+         id="rect4"
+         width="88.974327"
+         height="93.144997"
+         x="6.6036692"
+         y="2.4582584" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="8.0885834"
+     inkscape:cx="45.063515"
+     inkscape:cy="50.008757"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1" />
+  <title
+     id="title1">07</title>
+  <g
+     data-name="Group"
+     id="g1">
+    <path
+       data-name="Compound Path"
+       d="M 77.958251,48.270391 C 79.126359,38.566499 80.390193,27.562285 77.569828,21.371523 73.331062,9.5853931 60.703189,1.1268571 47.403261,1.1705766 A 32.6,32.6 0 0 0 21.048438,14.957284 l -19.6998929,0.06476 0.1143938,34.799812 6.9999622,-0.02301 -3.5700672,9.111785 11.5035531,1.062191 3.352906,16.089066 13.09697,-0.943058 -0.459565,12.301577 46.798104,-0.653837 -1.966391,-20.193645 a 59.5,59.5 0 0 1 -0.131885,-9.699619 c 0.191781,-2.500644 0.481918,-5.501614 0.871725,-8.602912 z M 47.422984,7.1705441 c 10.899941,-0.03583 21.222567,6.8302739 24.553777,16.3193749 l 9.86e-4,0.299999 a 15.5,15.5 0 0 1 1.217745,5.396026 l -24.599867,0.08086 -0.0046,-1.399993 A 13,13 0 0 0 35.54836,14.90962 l -6.599965,0.02169 A 26.9,26.9 0 0 1 47.422984,7.1705441 Z M 35.568083,20.909587 a 7,7 0 0 1 7.022972,6.976952 l 0.02893,8.799953 a 7,7 0 0 1 -6.976952,7.022972 l -16.199912,0.05325 -0.07495,-22.799876 z m -28.2998467,0.09303 5.9999667,-0.01972 0.07495,22.799877 -5.999967,0.01972 z m 31.3983767,60.297111 0.458578,-12.601575 -14.496634,1.047658 -3.350276,-15.289069 -7.902587,-0.774027 1.487172,-3.90491 20.799887,-0.06837 A 13,13 0 0 0 48.61995,36.666769 l -0.0046,-1.399993 24.499867,-0.08054 c -0.186521,4.100636 -0.672055,8.502255 -1.159232,12.403878 -0.487177,3.901622 -0.679616,6.202267 -0.871068,8.802911 a 65.5,65.5 0 0 0 0.135172,10.699613 l 1.345028,13.695653 z"
+       id="path1" />
+  </g>
+  <text
+     x="0.00010614421"
+     y="114.32637"
+     fill="#000000"
+     font-size="4.96961px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text1"
+     transform="scale(1.004285,0.99573327)"
+     style="fill:#000000;fill-opacity:1;stroke-width:0.993922"
+     clip-path="url(#clipPath4)">Created by Bharat</text>
+  <text
+     x="0.00010614421"
+     y="119.29597"
+     fill="#000000"
+     font-size="4.96961px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text2"
+     transform="scale(1.004285,0.99573327)"
+     style="fill:#000000;fill-opacity:1;stroke-width:0.993922"
+     clip-path="url(#clipPath3)">from the Noun Project</text>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>07</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

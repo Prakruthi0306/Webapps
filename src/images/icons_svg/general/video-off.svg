@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 30 24"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="video-off.svg"
+   width="30"
+   height="24"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="20.525"
+     inkscape:cx="13.325213"
+     inkscape:cy="13.276492"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1" />
+  <g
+     data-name="Layer 34"
+     id="g1"
+     transform="matrix(1.0115089,0,0,0.98660282,-3.0456529,-3.8525027)">
+    <path
+       d="M 8.7483516,18.652738 6.6459499,20.670844 V 7.9769608 H 19.870056 L 17.767655,9.9950662 H 8.7483516 Z m 22.6008184,4.873725 -5.781605,-5.54979 v 6.145131 H 9.1898559 L 6.1308615,27.058148 4.6486683,25.625293 26.082653,5.0406173 27.575359,6.4734722 25.567565,8.3906724 V 14.122092 L 31.34917,8.5723019 Z M 23.465163,22.103699 V 10.408778 L 11.292257,22.103699 Z"
+       id="path1"
+       style="stroke-width:1.02991" />
+  </g>
+  <text
+     x="-2.666626"
+     y="48.048855"
+     fill="#000000"
+     font-size="5px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text1">Created by ClickHan</text>
+  <text
+     x="-2.666626"
+     y="53.048855"
+     fill="#000000"
+     font-size="5px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text2">from the Noun Project</text>
+</svg>

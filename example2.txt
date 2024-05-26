@@ -1,0 +1,6 @@
+QuestionText, QuestionDescription, QuestionCatgory, QuestionSubCategory, CustomID
+What is your name?, Multiple choice, Cognitive
+What season of the year is it?, Multiple choice, Cognitive,
+Name some examples of meat, Multiple choice, Directions,
+Point to the dog in this picture, Multiple choice, Directions,
+How many days are in February?, Multiple choice, Cognitive

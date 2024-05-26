@@ -1,0 +1,1865 @@
+<template>
+  <div
+    :key="questionsLoaded"
+    v-if="questionsLoaded == true"
+    style="margin-left: 30px; margin-right: 30px;"
+  >
+    <br />
+    <br /><br /><br />
+
+    <b>
+      <b-icon-arrow-left></b-icon-arrow-left>
+    </b>
+    <router-link
+      :to="{ name: 'viewapp', params: { application: this.application } }"
+      class="text-dark"
+    >
+      &nbsp;
+      <b>RETURN TO EDITING QUESTIONS</b>
+    </router-link>
+
+    <div class="text-right">
+      <b-button
+        squared
+        variant="light"
+        size="lg"
+        type="submit"
+        class="text-dark borderGray"
+        @click="uploadQuestionResults"
+      >
+        <h4>
+          Submit application
+        </h4>
+      </b-button>
+
+      <b-button
+        squared
+        variant="light"
+        size="lg"
+        type="submit"
+        class="text-dark borderGray"
+        @click="setChildView(false)"
+      >
+        <h4>
+          Specialist view
+        </h4>
+      </b-button>
+
+      <b-button
+        squared
+        variant="light"
+        size="lg"
+        type="submit"
+        class="text-dark borderGray"
+        @click="setChildView(true)"
+      >
+        <h4>
+          Child view
+        </h4>
+      </b-button>
+    </div>
+
+    <br />
+    <br />
+
+    <h4 v-if="childView == false">
+      <b>Preview: Question {{ selectedQuestion.number }}</b>
+    </h4>
+    <br />
+
+    <b-form-row no-gutters="true">
+      <b-col v-if="childView == false" cols="2">
+        <b-card bg-variant="white" class="container">
+          <img class="logo" src="../images/neuroleap_logo.png" />
+          <br />
+          <br />
+
+          <h5>Questions/Tasks</h5>
+        </b-card>
+        <b-list-group>
+          <b-list-group-item
+            v-for="question in getQuestions"
+            v-bind:key="question.number"
+            @click="setSelectedQuestion(question)"
+            :class="setListItemClass(question)"
+          >
+            <br />
+
+            <b-container>
+              <p>
+                {{ question.category }}
+                <b-form-text>{{ question.subCategory }}</b-form-text>
+              </p>
+
+              <span>
+                {{ question.number }}. &nbsp; {{ question.text }}
+                <br />
+              </span>
+              <br />
+            </b-container>
+          </b-list-group-item>
+        </b-list-group>
+
+        <b-card bg-variant="white" class="container">
+          <b-row>
+            <b-col cols="4">
+              <img
+                class="cardButtonRow"
+                src="../images/icons_svg/Yellow/world_down.svg"
+              />
+            </b-col>
+
+            <b-col cols="4">
+              <img
+                class="cardButtonRow"
+                src="../images/icons_svg/Yellow/phone_down.svg"
+              />
+            </b-col>
+
+            <b-col cols="4">
+              <img
+                class="cardButtonRow"
+                src="../images/icons_svg/Yellow/question_down.svg"
+              />
+            </b-col>
+          </b-row>
+        </b-card>
+      </b-col>
+
+      <b-col :cols="childView == false ? 7 : 12">
+        <b-card v-if="childView == false" bg-variant="white" class="container">
+          <b-row>
+            <b-col>
+              <PercentageCircle
+                :percent="getPercent()"
+                size="big"
+                active-color="blue"
+                complete-color="green"
+              />
+            </b-col>
+
+            <b-col>
+              <b-form-text @click="choosePreviousQuestion"
+                >Previous Question</b-form-text
+              >
+              <h5>
+                <b>
+                  {{ getPreviousQuestion().number }}. &nbsp;
+                  {{ getPreviousQuestion().text }}
+                </b>
+              </h5>
+
+              <b-form-text @click="chooseNextQuestion"
+                >Next Question</b-form-text
+              >
+              <h5>
+                <b>
+                  {{ getNextQuestion().number }}. &nbsp;
+                  {{ getNextQuestion().text }}
+                </b>
+              </h5>
+            </b-col>
+
+            <b-col>
+              <b-form-text
+                >Suggested Score: {{ getSuggestedScore() }}</b-form-text
+              >
+              <h5>Verdict: {{ selectedQuestion.selectedScoreInPreview }}</h5>
+            </b-col>
+          </b-row>
+        </b-card>
+
+        <b-card bg-variant="white" class="container" style="font-size: medium;">
+          <b-row>
+            <b-col cols="3">
+              <b-row>
+                <b-col cols="1">
+                  <b-icon-arrow-left-circle-fill
+                    @click="choosePreviousQuestion"
+                  ></b-icon-arrow-left-circle-fill>
+                </b-col>
+                <b-col cols="1">
+                  <b-icon-arrow-right-circle-fill
+                    @click="chooseNextQuestion"
+                  ></b-icon-arrow-right-circle-fill>
+                </b-col>
+                <b-col cols="1">
+                  <b-icon-arrow-repeat
+                    @click="repeatQuestion"
+                  ></b-icon-arrow-repeat>
+                </b-col>
+              </b-row>
+              <br />
+              <p>
+                {{ selectedQuestion.category }}
+                <b-form-text>{{ selectedQuestion.subCategory }}</b-form-text>
+                <b-form-text>{{
+                  "Question ID: " + selectedQuestion.id
+                }}</b-form-text>
+              </p>
+            </b-col>
+
+            <b-col :cols="childView == false ? 6 : 7">
+              <b-card-header
+                style="background-color: #ff930f; height: 20px;"
+              ></b-card-header>
+
+              <b-card bg-variant="light" class="container">
+                <b>
+                  {{ selectedQuestion.number }}. &nbsp;
+                  {{ selectedQuestion.text }}
+                </b>
+              </b-card>
+            </b-col>
+
+            <b-col v-if="childView == false">
+              <b-button variant="primary" v-b-modal.resetAllProgress>
+                <b>RESET</b> </b-button
+              ><br />
+
+              <b-button
+                variant="primary"
+                style="background-color: #3333ff;"
+                v-b-modal.report
+              >
+                <b>REPORT</b>
+              </b-button>
+              <br />
+              <b-dropdown
+                variant="outline-primary"
+                :key="selectedQuestion"
+                text="Past results"
+                size="sm"
+              >
+                <b-dropdown-item @click="displayCurrentVersion"
+                  >Current version</b-dropdown-item
+                >
+                <b-dropdown-item
+                  v-for="(questionResult, index) in getVersions()"
+                  v-bind:key="index"
+                  @click="displayPastVersion(index)"
+                >
+                  {{ "Result " + (index + 1) }}
+                </b-dropdown-item>
+              </b-dropdown>
+            </b-col>
+          </b-row>
+
+          <br />
+
+          <b-row>
+            <div
+              v-if="selectedQuestion.buttonOrganization == 'Next to each other'"
+            >
+              <b-button
+                v-for="answer in getAnswers()"
+                v-bind:key="answer"
+                class="answerButtonHorizontal text-dark"
+                v-bind:class="setChildSelectedAnswerClasses(answer)"
+                @click="setChildSelectedAnswers(answer)"
+              >
+                <b>{{ answer }}</b>
+              </b-button>
+              <br />
+
+              <div v-if="selectedQuestion.imageOrganization == 'Horizontal'">
+                <br />
+
+                <b-row>
+                  <b-col>
+                    <img
+                      v-for="imageURL in getImages(selectedQuestion)"
+                      v-bind:key="imageURL"
+                      :src="imageURL"
+                      left
+                      class="col-md-6"
+                      fluid
+                    />
+                  </b-col>
+                </b-row>
+              </div>
+
+              <div v-else>
+                <b-col>
+                  <b-img
+                    v-for="imageURL in getImages(selectedQuestion)"
+                    right
+                    v-bind:key="imageURL"
+                    :src="imageURL"
+                    fluid
+                  ></b-img>
+                </b-col>
+              </div>
+            </div>
+
+            <div v-else>
+              <b-row>
+                <b-col>
+                  <div
+                    v-if="selectedQuestion.imageOrganization == 'Horizontal'"
+                  >
+                    <b-col>
+                      <b-img
+                        v-for="imageURL in getImages(selectedQuestion)"
+                        v-bind:key="imageURL"
+                        :src="imageURL"
+                        left
+                        class="col-md-6"
+                        fluid
+                      ></b-img>
+                    </b-col>
+                  </div>
+
+                  <div v-else>
+                    <b-col>
+                      <b-img
+                        v-for="imageURL in getImages(selectedQuestion)"
+                        right
+                        v-bind:key="imageURL"
+                        :src="imageURL"
+                        fluid
+                      ></b-img>
+                    </b-col>
+                  </div>
+                </b-col>
+
+                <b-col cols="4">
+                  <b-button
+                    v-for="answer in getAnswers()"
+                    v-bind:key="answer"
+                    class="mr-3 answerButtonVertical text-dark"
+                    v-bind:class="setChildSelectedAnswerClasses(answer)"
+                    @click="setChildSelectedAnswers(answer)"
+                  >
+                    <b>{{ answer }}</b>
+                  </b-button>
+                </b-col>
+              </b-row>
+            </div>
+          </b-row>
+
+          <br />
+
+          <b-row v-if="childView == false">
+            <img style="width: 50px;" src="../images/VR-Button.png" />
+
+            <img style="width: 50px; " src="../images/Bio-Button.png" />
+
+            <img style="width: 50px;" src="../images/GR-Button.png" />
+
+            <b-button
+              v-for="score in selectedQuestion.selectedScoringOptions"
+              v-bind:key="score"
+              pill
+              @click="setScore(score)"
+              size="sm"
+              style="font-size: small;"
+              class="buttonsBelowQuestion"
+              v-bind:class="{
+                'btn  btn-light btn-outline-danger':
+                  score == '0' &&
+                  selectedQuestion.selectedScoreInPreview != '0',
+
+                'btn  btn-light btn-outline-success':
+                  (score == '+1' &&
+                    selectedQuestion.selectedScoreInPreview != '+1') ||
+                  (score == '+2' &&
+                    selectedQuestion.selectedScoreInPreview != '+2') ||
+                  (score == '+3' &&
+                    selectedQuestion.selectedScoreInPreview != '+3') ||
+                  (score == '+4' &&
+                    selectedQuestion.selectedScoreInPreview != '+4'),
+
+                'btn btn-danger':
+                  score == '0' &&
+                  selectedQuestion.selectedScoreInPreview == '0',
+                'btn btn-success':
+                  (score == '+1' &&
+                    selectedQuestion.selectedScoreInPreview == '+1') ||
+                  (score == '+2' &&
+                    selectedQuestion.selectedScoreInPreview == '+2') ||
+                  (score == '+3' &&
+                    selectedQuestion.selectedScoreInPreview == '+3') ||
+                  (score == '+4' &&
+                    selectedQuestion.selectedScoreInPreview == '+4'),
+              }"
+            >
+              <b>{{ score }}</b>
+            </b-button>
+
+            <img
+              style="width: 50px;"
+              src="../images/Info-Icon.png"
+              v-b-popover.top="getProcedureContent"
+              title="Procedure content"
+            />
+
+            <img
+              style="width: 50px;"
+              src="../images/note+pen.png"
+              v-b-modal.notes
+            />
+
+            <b-modal
+              id="notes"
+              scrollable
+              size="lg"
+              :title="
+                'Enter notes on child for Question' +
+                  ' ' +
+                  selectedQuestion.number
+              "
+            >
+              <b-row class="justify-content-center vertical-center">
+                <div class="col-md-8">
+                  <b-form-textarea
+                    rows="8"
+                    max-rows="8"
+                    v-model="selectedQuestion.notes"
+                  ></b-form-textarea>
+                  <br />
+                  <b-button
+                    block="true"
+                    squared
+                    size="lg"
+                    class="returnToPreviewButton text-dark"
+                    @click="$bvModal.hide('notes')"
+                  >
+                    <b>Return to previewing questions</b>
+                  </b-button>
+                </div>
+              </b-row>
+            </b-modal>
+
+            <b-modal
+              id="resetAllProgress"
+              scrollable
+              size="lg"
+              :title="'Reset child progress on this session'"
+            >
+              <b-row class="justify-content-center vertical-center">
+                <div class="col-md-8">
+                  <p>
+                    Are you sure you want to reset the child's progress on this
+                    application and lose all data associated with this session?
+                  </p>
+                  <br />
+                  <small
+                    >Note: previous results for this application will not be
+                    removed.</small
+                  >
+                  <br /><br />
+                  <b-button
+                    block="true"
+                    squared
+                    size="lg"
+                    class="returnToPreviewButton text-dark"
+                    @click="resetAllProgressNow"
+                  >
+                    <b>Return to previewing questions</b>
+                  </b-button>
+                </div>
+              </b-row>
+            </b-modal>
+
+            <img
+              id="promptButton"
+              style="width: 50px;"
+              src="../images/Prompt-Button.png"
+            />
+
+            <b-popover
+              target="promptButton"
+              triggers="click"
+              :show.sync="promptDisplaying"
+              @shown="showRelevantPrompt"
+              @hidden="closeRelevantPrompt"
+              :title="currentTimeBlock == 1 ? 'Prompt 1' : 'Prompt 2'"
+            >
+              <p>{{ promptText }}</p>
+            </b-popover>
+
+            <img
+              src="../images/Recording-Button.png"
+              style="width: 50px;"
+              v-b-modal.recordedAudiosModal
+            />
+
+            <b-modal
+              id="recordedAudiosModal"
+              scrollable
+              size="lg  "
+              :title="
+                'Recorded audio clips for Question' +
+                  ' ' +
+                  selectedQuestion.number
+              "
+            >
+              <b-row class="justify-content-center vertical-center">
+                <div class="col-md-10">
+                  <h4>Record audio</h4>
+                  <br />
+
+                  <b-card-group deck>
+                    <b-card class="justify-content-center vertical-center">
+                      <img
+                        class="buttonsBelowQuestion cardButtonRow"
+                        src="../images/Recording-Button.png"
+                        @click="startRecordingAudio"
+                      />
+                      Start recording
+                    </b-card>
+
+                    <b-card>
+                      <div v-if="pausedAudio == false">
+                        <img
+                          class="buttonsBelowQuestion cardButtonRow"
+                          src="../images/icons_svg/Yellow/pause_down.svg"
+                          @click="pauseRecordingAudio"
+                        />
+                        Pause recording
+                      </div>
+
+                      <div v-else>
+                        <img
+                          class="buttonsBelowQuestion cardButtonRow"
+                          src="../images/icons_svg/Yellow/pause_up.svg"
+                          @click="resumeRecordingAudio"
+                        />Resume recording
+                      </div>
+                    </b-card>
+
+                    <b-card>
+                      <img
+                        class="buttonsBelowQuestion cardButtonRow"
+                        src="../images/icons_svg/Yellow/mic_down.svg"
+                        @click="stopRecordingAudio"
+                      />
+                      Stop recording
+                    </b-card>
+                  </b-card-group>
+
+                  <br />
+                  <br />
+                  <h4>Playback past audio</h4>
+                  <br />
+
+                  <b-row>
+                    <b-col cols="8">
+                      <div
+                        v-for="(audio, index) in selectedQuestion.audioClips"
+                        v-bind:key="audio"
+                      >
+                        <div style="float: left;">
+                          <audio controls :src="getAudioClip(index)" />
+                        </div>
+
+                        <div
+                          style="float: left; font-size: 50px; padding-left: 10px;"
+                          class="close"
+                          aria-label="Close"
+                          @click="deleteAudioClip(index)"
+                          aria-hidden="true"
+                        >
+                          ×
+                        </div>
+                      </div>
+                    </b-col>
+                  </b-row>
+                  <br />
+
+                  <b-button
+                    block="true"
+                    squared
+                    size="lg"
+                    class="returnToPreviewButton text-dark"
+                    @click="$bvModal.hide('recordedAudiosModal')"
+                  >
+                    <b>Return to previewing questions</b>
+                  </b-button>
+                </div>
+              </b-row>
+            </b-modal>
+
+            <img
+              style="width: 50px;"
+              src="../images/Instruction-Icon.png"
+              v-b-modal.instructionVideo
+            />
+
+            <b-modal
+              size="lg"
+              id="instructionVideo"
+              scrollable
+              title="Instruction video"
+            >
+              <b-row class="justify-content-center vertical-center">
+                <div class="col-md-8">
+                  <br />
+
+                  <div v-if="getInstructionVideo() != ''">
+                    <video
+                      :src="getInstructionVideo()"
+                      width="100%"
+                      autoplay
+                      controls
+                      class="videoFitParent"
+                    />
+                  </div>
+
+                  <div v-else>
+                    <h3>You have not uploaded any instruction video.</h3>
+
+                    <p>
+                      Please return to the questions editing page and upload an
+                      instruction video for this question.
+                    </p>
+                  </div>
+
+                  <div class="text-left">
+                    <b-button
+                      block="true"
+                      squared
+                      size="lg"
+                      class="returnToPreviewButton text-dark"
+                      @click="$bvModal.hide('instructionVideo')"
+                    >
+                      <b>Return to previewing questions</b>
+                    </b-button>
+                  </div>
+                </div>
+              </b-row>
+            </b-modal>
+
+            <b-modal
+              scrollable
+              @shown="displayReport"
+              @hidden="closeReport"
+              id="report"
+              size="xl"
+              :title="
+                this.application.reportTitle != ''
+                  ? this.application.reportTitle
+                  : 'Report'
+              "
+            >
+              <Report
+                v-if="displayReportCheck"
+                :application="this.application"
+                :pastResultsByTimestamp="this.pastResultsByTimestamp"
+                :firstResults="this.firstResults"
+                :lastResults="this.lastResults"
+                :bgColor="this.application.reportColorTheme"
+              />
+            </b-modal>
+          </b-row>
+        </b-card>
+
+        <b-card-group v-if="childView == false">
+          <b-card
+            bg-variant="white"
+            class="container"
+            style="font-size: small;"
+          >
+            <b>EEG</b>
+          </b-card>
+
+          <b-card
+            bg-variant="white"
+            class="container"
+            style="font-size: small;"
+          >
+            <div v-if="this.pausedVideo == false">
+              <img
+                class="cardButtonRow"
+                src="../images/icons_svg/Yellow/pause_up.svg"
+                @click="pauseRecordingVideo"
+              />
+              Pause recording
+            </div>
+
+            <div v-else>
+              <img
+                class="cardButtonRow"
+                src="../images/icons_svg/Yellow/pause_down.svg"
+                @click="resumeRecordingVideo"
+              />Resume recording
+            </div>
+          </b-card>
+
+          <b-card
+            bg-variant="white"
+            class="container"
+            style="font-size: small;"
+          >
+            <img
+              class="cardButtonRow"
+              src="../images/icons_svg/Yellow/play_up.svg"
+              v-b-modal.recordedVideosModal
+            />Playback videos
+          </b-card>
+
+          <b-modal
+            id="recordedVideosModal"
+            scrollable
+            size="lg"
+            :title="'Video clips for Question' + ' ' + selectedQuestion.number"
+          >
+            <b-row class="justify-content-center vertical-center">
+              <div class="col-md-11">
+                <div v-if="selectedQuestion.videoClips.length > 0">
+                  <b-tabs
+                    vertical
+                    active-nav-item-class="font-weight-bold text-black"
+                  >
+                    <b-tab
+                      v-for="(video, index) in selectedQuestion.videoClips"
+                      v-bind:key="video"
+                      :title="'Video #' + (index + 1)"
+                      active
+                    >
+                      <div
+                        style="float: right; font-size: 50px;"
+                        class="close"
+                        aria-label="Close"
+                        @click="deleteVideoClip(index)"
+                        aria-hidden="true"
+                      >
+                        ×
+                      </div>
+                      <div style="float: left;">
+                        <video
+                          :src="getVideoClip(index)"
+                          class="videoFitParent"
+                          width="80%"
+                          controls
+                        />
+                        <br />
+                      </div>
+                    </b-tab>
+                  </b-tabs>
+                </div>
+
+                <div v-else>
+                  <h3>You have not recorded any videos of the child.</h3>
+                  <br />
+                  <h5>Instructions:</h5>
+                  <p>
+                    Press the "Record video" button to create a new recording
+                    for the child. Press the "Pause recording" button to
+                    temporarily stop recording video/audio, and click "Resume
+                    recording" when appropriate. Finally, press "Stop recording"
+                    when you are satisfied with the resulting video. You can
+                    create multiple videos for each question, upload or download
+                    them, and analyze the videos in detail whenever you wish.
+                  </p>
+                </div>
+                <br />
+
+                <b-button
+                  block="true"
+                  squared
+                  size="lg"
+                  class="returnToPreviewButton text-dark"
+                  @click="$bvModal.hide('recordedVideosModal')"
+                >
+                  <b>Return to previewing questions</b>
+                </b-button>
+              </div>
+            </b-row>
+          </b-modal>
+
+          <b-card
+            bg-variant="white"
+            class="container"
+            style="font-size: small;"
+          >
+            <div v-if="recordingVideo">
+              <b-button variant="warning" size="sm" @click="stopRecordingVideo">
+                <b-icon-camera-video-off-fill></b-icon-camera-video-off-fill> </b-button
+              >Stop recording
+            </div>
+
+            <div v-else>
+              <img
+                class="cardButtonRow"
+                src="../images/icons_svg/Yellow/recording_up.svg"
+                @click="startRecordingVideo"
+              />
+            </div>
+            Record video
+          </b-card>
+
+          <b-card
+            bg-variant="white"
+            class="container"
+            style="font-size: small;"
+          >
+            <b>ECG</b>
+          </b-card>
+        </b-card-group>
+      </b-col>
+
+      <b-col v-if="childView == false" cols="3">
+        <b-card bg-variant="white" class="container" style="height: 250px;">
+          <h5 @click="chooseNextQuestion">
+            <b>Next Question</b>
+          </h5>
+          <p>
+            {{ getNextQuestion().number }}. &nbsp; {{ getNextQuestion().text }}
+          </p>
+
+          <b-img :src="getImages(getNextQuestion())[0]" fluid></b-img>
+        </b-card>
+
+        <b-card
+          v-for="camera in getCameras"
+          v-bind:key="camera"
+          bg-variant="white"
+          class="container"
+        >
+          <h5>
+            <b>
+              {{
+                selectedQuestion.selectedCameras[
+                  selectedQuestion.selectedCameras.indexOf(camera)
+                ]
+              }}
+            </b>
+          </h5>
+
+          <div class="camera">
+            <video
+              id="webcamVideo"
+              width="100%"
+              controls
+              class="videoFitParent"
+            />
+
+            <b-button v-if="videoOn" variant="primary" @click="turnOffWebcam()"
+              >Turn off webcam</b-button
+            >
+
+            <b-button v-else variant="primary" @click="startWebcam()"
+              >Turn on webcam</b-button
+            >
+          </div>
+        </b-card>
+
+        <br />
+      </b-col>
+    </b-form-row>
+
+    <br />
+    <br />
+  </div>
+
+  <div style="margin-top: 90px;" v-else>
+    <Spinner size="big" message="Loading..." speed="0.4"></Spinner>
+  </div>
+</template>
+
+<script>
+import {
+  BIconArrowLeft,
+  BIconArrowRepeat,
+  BIconArrowLeftCircleFill,
+  BIconArrowRightCircleFill,
+  BIconCameraVideoOffFill,
+} from "bootstrap-vue";
+import instance from "../axios.js"
+import PercentageCircle from "vue-css-percentage-circle";
+import Report from "./Report";
+import Spinner from "vue-simple-spinner";
+
+export default {
+  name: "previewApp",
+  props: {
+    application: Object,
+  },
+
+  components: {
+    BIconArrowLeft,
+    BIconArrowLeftCircleFill,
+    BIconArrowRightCircleFill,
+    BIconArrowRepeat,
+    PercentageCircle,
+    Spinner,
+    Report,
+    BIconCameraVideoOffFill,
+  },
+
+  data() {
+    let selectedQuestion = this.getSelectedQuestion(true);
+
+    return {
+      selectedQuestion: selectedQuestion,
+      pastResultsByTimestamp: [],
+      firstResults: [],
+      lastResults: [],
+      childView: false,
+      videoOn: false,
+      recordingAudio: false,
+      recordingVideo: false,
+      audioMediaRecorder: "",
+      videoMediaRecorder: "",
+      pausedAudio: false,
+      pausedVideo: false,
+      currentTimeBlock: 1,
+      promptText: "",
+      displayReportCheck: false,
+      promptDisplaying: false,
+      pastQuestionResults: [],
+
+      questionsLoaded: false,
+      currentQuestionVersion: true,
+      childSelectedAnswerSingle: "",
+      childSelectedAnswerMultiple: [],
+      notes: "",
+      audioClips: [],
+      videoClips: [],
+      selectedScoreInPreview: "",
+      promptClicks: 0,
+      repeatClicks: 0,
+    };
+  },
+
+  watch: {
+    selectedQuestion: function() {
+      setTimeout(() => {
+        this.currentTimeBlock = 1;
+        this.promptText = this.showPrompt1();
+
+        if (this.showPrompt1() != "") {
+          document.getElementById("promptButton").click();
+        }
+      }, (this.selectedQuestion.timeLimit1Minutes * 60 + this.selectedQuestion.timeLimit1Seconds) * 1000);
+
+      setTimeout(() => {
+        this.currentTimeBlock = 2;
+        this.promptText = this.showPrompt2();
+
+        if (this.showPrompt2() != "") {
+          document.getElementById("promptButton").click();
+        }
+      }, (this.selectedQuestion.timeLimit2Minutes * 60 + this.selectedQuestion.timeLimit2Seconds) * 1000);
+
+      if (this.selectedQuestion.textToSpeech) {
+        this.playSpeechFromText("   " + this.selectedQuestion.text);
+
+        if (this.selectedQuestion.answerOptions.length > 0) {
+          this.playSpeechFromText("  ");
+
+          var i = 0;
+
+          for (i = 0; i < this.selectedQuestion.answerOptions.length; i++) {
+            if (i == this.selectedQuestion.answerOptions.length - 2) {
+              this.playSpeechFromText(
+                this.selectedQuestion.answerOptions[i] + ", and"
+              );
+            } else {
+              this.playSpeechFromText(
+                this.selectedQuestion.answerOptions[i] + ","
+              );
+            }
+          }
+        }
+      }
+    },
+  },
+
+  mounted() {
+    var i = 0;
+    var z = 0;
+    var r = 0;
+
+    this.questionsLoaded = false;
+    var temp = [];
+    var numResultsPerQuestion = 0;
+    var pastResultsByTimestamp = [];
+
+    for (i = 0; i < this.application.questions.length; i++) {
+      this.application.questions[i].selectedScoreInPreview = "";
+      this.application.questions[i].childSelectedAnswerSingle = "";
+      this.application.questions[i].childSelectedAnswerMultiple = [];
+      this.application.questions[i].audioClips = [];
+      this.application.questions[i].videoClips = [];
+    }
+
+    for (i = 0; i < this.application.questions.length; i++) {
+      instance
+        .get(
+          "api/question-result/" +
+            this.application.questions[i].id
+        )
+        .then((result) => {
+          console.log("z = ", z);
+          if (result.data.length > 0) {
+            this.pastQuestionResults.push(result.data);
+
+            if (z >= this.application.questions.length - 1) {
+              this.pastQuestionResults.sort(
+                (a, b) => parseInt(a[0].number) - parseInt(b[0].number)
+              );
+
+              // Now that past question results are retrieved and sorted, sort ALL past question results by timestamp
+              console.log("Past ? results: ", this.pastQuestionResults);
+
+              Array.prototype.clone = function() {
+                var arr = this.slice(0);
+                for (var z = 0; z < this.length; z++) {
+                  if (this[z].clone) {
+                    //recursion
+                    arr[z] = this[z].clone();
+                  }
+                }
+                return arr;
+              };
+
+              temp = this.pastQuestionResults.clone();
+
+              pastResultsByTimestamp = temp.sort(
+                (a, b) => new Date(a.date) - new Date(b.date)
+              );
+
+              this.pastResultsByTimestamp = pastResultsByTimestamp;
+              console.log(
+                "Past results by timestamp = ",
+                pastResultsByTimestamp
+              );
+
+              for (r = 0; r < pastResultsByTimestamp.length; r++) {
+                this.firstResults.push(pastResultsByTimestamp[r][0]);
+
+                numResultsPerQuestion = pastResultsByTimestamp[r].length;
+                this.lastResults.push(
+                  pastResultsByTimestamp[r][numResultsPerQuestion - 1]
+                );
+              }
+
+              this.questionsLoaded = true;
+
+              console.log("First results = ", this.firstResults);
+              console.log("Last results = ", this.lastResults);
+              console.log("All past results: ", this.pastQuestionResults);
+            }
+
+            z++;
+          } else if (
+            result.data.length == 0 &&
+            z >= this.application.questions.length - 1
+          ) {
+            this.questionsLoaded = true;
+            console.log("Bla");
+            console.log("First results: ", this.firstResults);
+            console.log("Last results: ", this.lastResults);
+            console.log("All past results: ", this.pastQuestionResults);
+          } else {
+            z++;
+          }
+        });
+    }
+
+    if (this.questionsLoaded == true) {
+      setTimeout(() => {
+        this.promptText = this.showPrompt1();
+
+        if (this.showPrompt1() != "") {
+          document.getElementById("promptButton").click();
+        }
+      }, (this.selectedQuestion.timeLimit1Minutes * 60 + this.selectedQuestion.timeLimit1Seconds) * 1000);
+
+      setTimeout(() => {
+        this.currentTimeBlock = 2;
+        this.promptText = this.showPrompt2();
+
+        if (this.showPrompt2() != "") {
+          document.getElementById("promptButton").click();
+        }
+      }, (this.selectedQuestion.timeLimit2Minutes * 60 + this.selectedQuestion.timeLimit2Seconds) * 1000);
+
+      if (this.selectedQuestion.textToSpeech) {
+        this.playSpeechFromText("   " + this.selectedQuestion.text);
+      }
+    }
+  },
+
+  computed: {
+    getQuestions() {
+      return this.application.questions;
+    },
+    getCameras() {
+      return this.selectedQuestion.selectedCameras;
+    },
+  },
+
+  methods: {
+    resetAllProgressNow() {
+      this.$bvModal.hide("resetAllProgress");
+      this.$router.push({
+        name: "viewapp",
+        params: { application: this.application },
+      });
+    },
+
+    // Get other question result versions for the current selected question
+    getVersions() {
+      var toRet = [];
+
+      toRet = this.pastQuestionResults[this.selectedQuestion.number - 1];
+
+      return toRet;
+    },
+
+    displayCurrentVersion() {
+      // set question fields to the current question version in data function
+      this.selectedQuestion.childSelectedAnswerSingle = this.childSelectedAnswerSingle;
+      this.selectedQuestion.childSelectedAnswerMultiple = this.childSelectedAnswerMultiple;
+      this.selectedQuestion.notes = this.notes;
+      this.selectedQuestion.audioClips = this.audioClips;
+      this.selectedQuestion.videoClips = this.videoClips;
+      this.selectedQuestion.selectedScoreInPreview = this.selectedScoreInPreview;
+      this.selectedQuestion.promptClicks = this.promptClicks;
+      this.selectedQuestion.repeatClicks = this.repeatClicks;
+      this.currentQuestionVersion = true;
+    },
+
+    displayPastVersion(index) {
+      var questionResult = this.pastQuestionResults[
+        this.selectedQuestion.number - 1
+      ][index];
+
+      // If we switched to a past version from the current question, we need to backup the latest version of the current version
+      if (this.currentQuestionVersion == true) {
+        this.childSelectedAnswerSingle = this.selectedQuestion.childSelectedAnswerSingle;
+        this.childSelectedAnswerMultiple = this.selectedQuestion.childSelectedAnswerMultiple;
+        this.notes = this.selectedQuestion.notes;
+        this.audioClips = this.selectedQuestion.audioClips;
+        this.videoClips = this.selectedQuestion.videoClips;
+        this.selectedScoreInPreview = this.selectedQuestion.selectedScoreInPreview;
+        this.promptClicks = this.selectedQuestion.promptClicks;
+        this.repeatClicks = this.selectedQuestion.repeatClicks;
+
+        this.currentQuestionVersion = false;
+
+        console.log(this);
+      }
+
+      this.selectedQuestion.childSelectedAnswerSingle =
+        questionResult.childSelectedAnswerSingle;
+      this.selectedQuestion.childSelectedAnswerMultiple =
+        questionResult.childSelectedAnswerMultiple;
+      this.selectedQuestion.notes = questionResult.notes;
+      this.selectedQuestion.audioClips = questionResult.audioClips;
+      this.selectedQuestion.videoClips = questionResult.videoClips;
+
+      this.selectedQuestion.selectedScoreInPreview =
+        questionResult.selectedScoreInPreview;
+      this.selectedQuestion.promptClicks = questionResult.promptClicks;
+      this.selectedQuestion.repeatClicks = questionResult.repeatClicks;
+
+      console.log("Question result is ", questionResult);
+    },
+
+    uploadQuestionResults() {
+      // let headers = "Content-Type: application/json";
+      var i = 0;
+      var temp = "";
+      var timeApplicationFinished = new Date();
+
+      for (i = 0; i < this.application.questions.length; i++) {
+        temp = this.application.questions[i];
+        let questionResult = {
+          reportID: "" + Math.ceil(Math.random() * 500),
+          text: temp.text,
+          category: temp.category,
+          notes: temp.notes,
+          childSelectedAnswerSingle: temp.childSelectedAnswerSingle,
+          childSelectedAnswerMultiple: temp.childSelectedAnswerMultiple,
+          questionID: temp.id,
+          number: temp.number,
+          audioClips: temp.audioClips,
+          videoClips: temp.videoClips,
+          selectedScoreInPreview: temp.selectedScoreInPreview,
+          dateAndTime: timeApplicationFinished,
+          promptClicks: temp.promptClicks,
+          repeatClicks: temp.repeatClicks,
+        };
+
+        instance
+          .post(
+            "api/question-result",
+
+            questionResult
+          )
+          .then((response) => {
+            console.log(
+              "new question result created on server: ",
+              response.data
+            );
+          })
+          .catch((error) => console.log(error));
+      }
+    },
+
+    setChildView(chosenButton) {
+      this.childView = chosenButton;
+    },
+
+    startRecordingAudio() {
+      this.recordingAudio = true;
+      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        const mediaRecorder = new MediaRecorder(stream);
+        // Is continuous recording with 0 time limits
+        if (
+          this.selectedQuestion.audioRecordingTimeLimitMinutes == 0 &&
+          this.selectedQuestion.audioRecordingTimeLimitSeconds == 0
+        ) {
+          mediaRecorder.start();
+          this.audioMediaRecorder = mediaRecorder;
+          const audioChunks = [];
+          mediaRecorder.addEventListener("dataavailable", (event) => {
+            audioChunks.push(event.data);
+          });
+          mediaRecorder.addEventListener("stop", () => {
+            const audioBlob = new Blob(audioChunks);
+            this.encodeAudioClipAsURL(audioBlob);
+          });
+        }
+        // Is not continuous recording, has a set time limit for each recording
+        else {
+          setTimeout(() => {
+            this.stopRecordingAudio();
+          }, (this.selectedQuestion.audioRecordingTimeLimitMinutes * 60 + this.selectedQuestion.audioRecordingTimeLimitSeconds) * 1000);
+          mediaRecorder.start();
+          this.audioMediaRecorder = mediaRecorder;
+          const audioChunks = [];
+          mediaRecorder.addEventListener("dataavailable", (event) => {
+            audioChunks.push(event.data);
+          });
+          mediaRecorder.addEventListener("stop", () => {
+            const audioBlob = new Blob(audioChunks);
+            this.encodeAudioClipAsURL(audioBlob);
+          });
+        }
+      });
+    },
+
+    pauseRecordingAudio() {
+      this.pausedAudio = true;
+      this.audioMediaRecorder.pause();
+    },
+
+    resumeRecordingAudio() {
+      this.pausedAudio = false;
+      this.audioMediaRecorder.resume();
+    },
+
+    stopRecordingAudio() {
+      this.audioMediaRecorder.stop();
+      this.recordingAudio = false;
+    },
+
+    playAudio() {
+      const audio = new Audio(this.audioURL);
+      audio.play();
+    },
+
+    startRecordingVideo() {
+      this.recordingVideo = true;
+      navigator.mediaDevices
+        .getUserMedia({ audio: true, video: true })
+        .then((stream) => {
+          const mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.start();
+          this.videoMediaRecorder = mediaRecorder;
+          const videoChunks = [];
+          mediaRecorder.addEventListener("dataavailable", (event) => {
+            videoChunks.push(event.data);
+          });
+          mediaRecorder.addEventListener("stop", () => {
+            const videoBlob = new Blob(videoChunks);
+            this.encodeVideoClipAsURL(videoBlob);
+          });
+        });
+    },
+
+    encodeVideoClipAsURL(videoBlob) {
+      const reader = new FileReader();
+      reader.addEventListener("load", (e) => {
+        this.selectedQuestion.videoClips.push(
+          "data:video/webm;base64," + btoa(e.target.result)
+        );
+      });
+
+      reader.readAsBinaryString(videoBlob);
+    },
+
+    encodeAudioClipAsURL(audioBlob) {
+      const reader = new FileReader();
+      reader.addEventListener("load", (e) => {
+        this.selectedQuestion.audioClips.push(
+          "data:audio/ogg;base64," + btoa(e.target.result)
+        );
+      });
+
+      reader.readAsBinaryString(audioBlob);
+    },
+
+    getVideoClip(index) {
+      return this.selectedQuestion.videoClips[index];
+    },
+
+    getAudioClip(index) {
+      return this.selectedQuestion.audioClips[index];
+    },
+
+    deleteVideoClip(index) {
+      this.removeArr(
+        this.selectedQuestion.videoClips,
+        this.selectedQuestion.videoClips[index]
+      );
+    },
+
+    deleteAudioClip(index) {
+      this.removeArr(
+        this.selectedQuestion.audioClips,
+        this.selectedQuestion.audioClips[index]
+      );
+    },
+
+    pauseRecordingVideo() {
+      this.pausedVideo = true;
+      this.videoMediaRecorder.pause();
+    },
+
+    resumeRecordingVideo() {
+      this.pausedVideo = false;
+      this.videoMediaRecorder.resume();
+    },
+
+    stopRecordingVideo() {
+      this.videoMediaRecorder.stop();
+      this.recordingVideo = false;
+    },
+
+    startWebcam() {
+      if (
+        "mediaDevices" in navigator &&
+        "getUserMedia" in navigator.mediaDevices
+      ) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+          const videoPlayer = document.querySelector("video");
+          videoPlayer.srcObject = stream;
+          this.videoOn = true;
+          videoPlayer.play();
+        });
+      } else {
+        alert("Can't get video");
+      }
+    },
+
+    turnOffWebcam() {
+      let video = document.getElementById("webcamVideo");
+
+      var stream = video.srcObject;
+      var tracks = stream.getTracks();
+
+      for (var i = 0; i < tracks.length; i++) {
+        var track = tracks[i];
+        track.stop();
+      }
+      video.srcObject = null;
+      this.videoOn = false;
+    },
+
+    getProcedureContent() {
+      if (this.selectedQuestion.procedureContent != "") {
+        if (this.selectedQuestion.textToSpeech) {
+          this.playSpeechFromText(this.selectedQuestion.procedureContent);
+        }
+
+        return this.selectedQuestion.procedureContent;
+      } else {
+        return "No procedure content entered";
+      }
+    },
+
+    choosePreviousQuestion() {
+      var selectedQuestionIndex = this.application.questions.indexOf(
+        this.selectedQuestion
+      );
+
+      if (selectedQuestionIndex > 0) {
+        selectedQuestionIndex--;
+        this.selectedQuestion = this.application.questions[
+          selectedQuestionIndex
+        ];
+      } else {
+        this.selectedQuestion = this.application.questions[
+          this.application.questions.length - 1
+        ];
+      }
+    },
+
+    chooseNextQuestion() {
+      var selectedQuestionIndex = this.application.questions.indexOf(
+        this.selectedQuestion
+      );
+
+      if (selectedQuestionIndex + 1 < this.application.questions.length) {
+        selectedQuestionIndex++;
+        this.selectedQuestion = this.application.questions[
+          selectedQuestionIndex
+        ];
+      } else {
+        this.selectedQuestion = this.application.questions[0];
+      }
+    },
+
+    getPreviousQuestion() {
+      var selectedQuestionIndex = this.application.questions.indexOf(
+        this.selectedQuestion
+      );
+
+      if (selectedQuestionIndex > 0) {
+        return this.application.questions[selectedQuestionIndex - 1];
+      } else {
+        return this.application.questions[
+          this.application.questions.length - 1
+        ];
+      }
+    },
+
+    getNextQuestion() {
+      var selectedQuestionIndex = this.application.questions.indexOf(
+        this.selectedQuestion
+      );
+
+      if (selectedQuestionIndex + 1 < this.application.questions.length) {
+        return this.application.questions[selectedQuestionIndex + 1];
+      } else {
+        return this.application.questions[0];
+      }
+    },
+
+    getPercent() {
+      var number =
+        this.application.questions.indexOf(this.selectedQuestion) + 1;
+      var length = this.application.questions.length;
+      var percent = Math.round((number / length) * 100);
+
+      return percent;
+    },
+
+    getAnswers() {
+      return this.selectedQuestion.answerOptions;
+    },
+
+    getSelectedQuestion(openView) {
+      if (openView == true) {
+        this.setSelectedQuestion(this.application.questions[0]);
+        return this.selectedQuestion;
+      }
+
+      return this.selectedQuestion;
+    },
+
+    setSelectedQuestion(question) {
+      // We need to switch the current selected question's content back to normal before changing the selected question
+
+      if (
+        this.selectedQuestion !== undefined &&
+        this.currentQuestionVersion == false
+      ) {
+        this.selectedQuestion.childSelectedAnswerSingle = this.childSelectedAnswerSingle;
+        this.selectedQuestion.childSelectedAnswerMultiple = this.childSelectedAnswerMultiple;
+        this.selectedQuestion.notes = this.notes;
+        this.selectedQuestion.audioClips = this.audioClips;
+        this.selectedQuestion.videoClips = this.videoClips;
+        this.selectedQuestion.selectedScoreInPreview = this.selectedScoreInPreview;
+        this.selectedQuestion.promptClicks = this.promptClicks;
+        this.selectedQuestion.repeatClicks = this.repeatClicks;
+      }
+
+      this.selectedQuestion = question;
+      this.currentQuestionVersion = true;
+    },
+
+    setListItemClass(question) {
+      if (question == this.selectedQuestion) {
+        return "leftBorderOrange";
+      }
+
+      return "";
+    },
+
+    setScore(score) {
+      this.selectedQuestion.selectedScoreInPreview = score;
+    },
+
+    getSuggestedScore() {
+      var correctAnswers;
+      var numChildSelectedCorrectAnswers = 0;
+      var i = 0;
+      var j = 0;
+
+      // Get suggested score for questions with only 1 possible answer
+      if (this.isSingleAnswerQuestion() == true) {
+        correctAnswers = this.selectedQuestion.singleCorrectAnswer;
+
+        if (
+          correctAnswers != "" &&
+          this.selectedQuestion.childSelectedAnswerSingle != ""
+        ) {
+          if (
+            this.selectedQuestion.childSelectedAnswerSingle == correctAnswers
+          ) {
+            if (this.selectedQuestion.promptClicks >= 4) {
+              return 1;
+            } else if (this.selectedQuestion.promptClicks == 3) {
+              return 2;
+            } else if (this.selectedQuestion.promptClicks == 2) {
+              return 3;
+            } else if (this.selectedQuestion.promptClicks <= 1) {
+              return 4;
+            }
+          } else {
+            return 0;
+          }
+        } else {
+          return "";
+        }
+      }
+
+      // Get suggested score for questions with multiple possible answers
+      else {
+        correctAnswers = this.selectedQuestion.multipleCorrectAnswers;
+
+        for (
+          i = 0;
+          i < this.selectedQuestion.childSelectedAnswerMultiple.length;
+          i++
+        ) {
+          for (j = 0; j < correctAnswers.length; j++) {
+            if (
+              this.selectedQuestion.childSelectedAnswerMultiple[i] ==
+              correctAnswers[j]
+            ) {
+              numChildSelectedCorrectAnswers++;
+            }
+          }
+        }
+
+        console.log(
+          "correctAnswers and numChildSelectedCorrectAnswers lengths are: ",
+          correctAnswers.length,
+          numChildSelectedCorrectAnswers
+        );
+
+        if (correctAnswers.length > 0 && numChildSelectedCorrectAnswers > 0) {
+          if (numChildSelectedCorrectAnswers == correctAnswers.length) {
+            if (this.selectedQuestion.promptClicks >= 4) {
+              return 1;
+            } else if (this.selectedQuestion.promptClicks == 3) {
+              return 2;
+            } else if (this.selectedQuestion.promptClicks == 2) {
+              return 3;
+            } else if (this.selectedQuestion.promptClicks <= 1) {
+              return 4;
+            }
+          } else {
+            return numChildSelectedCorrectAnswers;
+          }
+        } else {
+          return "";
+        }
+      }
+    },
+
+    getInstructionVideo() {
+      if (this.selectedQuestion.instructionVideo != "") {
+        return this.selectedQuestion.instructionVideo;
+      } else {
+        return "";
+      }
+    },
+
+    getImages(question) {
+      if (this.childView == false) return question.specialistImages;
+      else return question.childImages;
+    },
+
+    playPromptText() {
+      if (!window.speechSynthesis.speaking) {
+        if (this.currentTimeBlock == 1) {
+          if (
+            this.selectedQuestion.textToSpeech &&
+            this.selectedQuestion.promptContent1 != ""
+          ) {
+            this.playSpeechFromText("Prompt number 1: " + this.promptText);
+          }
+        } else {
+          if (this.selectedQuestion.textToSpeech && this.promptContent2 != "") {
+            this.playSpeechFromText("Prompt number 2: " + this.promptText);
+          }
+        }
+      }
+    },
+
+    showRelevantPrompt() {
+      if (!window.speechSynthesis.speaking) {
+        if (this.currentTimeBlock == 1) {
+          this.promptText = this.showPrompt1();
+        } else {
+          this.promptText = this.showPrompt2();
+        }
+
+        this.playPromptText();
+        return this.promptText;
+      }
+    },
+
+    closeRelevantPrompt() {
+      this.promptDisplaying = false;
+    },
+
+    showPrompt1() {
+      if (this.selectedQuestion.promptContent1) {
+        if (this.selectedQuestion.tallyPromptPresses)
+          this.increasePromptClicks();
+
+        return this.selectedQuestion.promptContent1;
+      } else {
+        return "No prompt text entered";
+      }
+    },
+
+    showPrompt2() {
+      if (this.selectedQuestion.promptContent2) {
+        if (this.selectedQuestion.tallyPromptPresses)
+          this.increasePromptClicks();
+
+        return this.selectedQuestion.promptContent2;
+      } else {
+        return "No prompt text entered";
+      }
+    },
+
+    increasePromptClicks() {
+      this.selectedQuestion.promptClicks++;
+    },
+
+    increaseRepeatClicks() {
+      this.selectedQuestion.repeatClicks++;
+    },
+
+    repeatQuestion() {
+      if (this.selectedQuestion.textToSpeech) {
+        this.playSpeechFromText("   " + this.selectedQuestion.text);
+
+        if (this.selectedQuestion.answerOptions.length > 0) {
+          this.playSpeechFromText("   ");
+
+          var i = 0;
+
+          for (i = 0; i < this.selectedQuestion.answerOptions.length; i++) {
+            if (i == this.selectedQuestion.answerOptions.length - 2) {
+              this.playSpeechFromText(
+                this.selectedQuestion.answerOptions[i] + ", and"
+              );
+            } else {
+              this.playSpeechFromText(
+                this.selectedQuestion.answerOptions[i] + ","
+              );
+            }
+          }
+        }
+      }
+
+      if (this.selectedQuestion.tallyRepeatPresses) {
+        this.increaseRepeatClicks();
+      }
+    },
+
+    displayReport() {
+      this.displayReportCheck = true;
+    },
+
+    closeReport() {
+      this.displayReportCheck = false;
+    },
+
+    playSpeechFromText(text) {
+      var utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    },
+
+    // Is the current question single or multiple answers? Return true if single, false if multiple
+    isSingleAnswerQuestion() {
+      if (this.selectedQuestion.questionType == "Single answer") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    setChildSelectedAnswerClasses(answer) {
+      var i = 0;
+
+      if (
+        this.isSingleAnswerQuestion() == true &&
+        answer == this.selectedQuestion.childSelectedAnswerSingle
+      ) {
+        return "childSelectedAnswer";
+      } else if (this.isSingleAnswerQuestion() == false) {
+        for (
+          i = 0;
+          i < this.selectedQuestion.childSelectedAnswerMultiple.length;
+          i++
+        ) {
+          if (answer == this.selectedQuestion.childSelectedAnswerMultiple[i]) {
+            return "childSelectedAnswer";
+          }
+        }
+      }
+    },
+
+    setChildSelectedAnswers(answer) {
+      if (this.isSingleAnswerQuestion() == true) {
+        this.selectedQuestion.childSelectedAnswerSingle = answer;
+      } else {
+        // Is this answer already one of the child's multiple selected answers?
+        if (
+          this.selectedQuestion.childSelectedAnswerMultiple.indexOf(answer) > -1
+        ) {
+          this.removeArr(
+            this.selectedQuestion.childSelectedAnswerMultiple,
+            answer
+          );
+        } else {
+          this.selectedQuestion.childSelectedAnswerMultiple.push(answer);
+        }
+      }
+    },
+
+    getReportColorTheme() {
+      if (this.application.reportColorTheme == "Yellow") {
+        return "warning";
+      } else if (this.application.reportColorTheme == 1) {
+        return "danger";
+      } else if (this.application.reportColorTheme == 2) {
+        return "primary";
+      } else if (this.application.reportColorTheme == 3) {
+        return "success";
+      }
+      console.log(this.application.reportColorTheme);
+
+      return "warning";
+    },
+
+    removeArr(arr, value) {
+      var index = arr.indexOf(value);
+      if (index > -1) {
+        arr.splice(index, 1);
+      }
+      return arr;
+    },
+  },
+};
+</script>
+
+<style scoped>
+.logo {
+  width: 75px;
+  height: auto;
+}
+
+.leftBorderOrange {
+  border-left: 5px solid #ff930f;
+}
+
+.answerButtonHorizontal {
+  background-color: #ff930f;
+  color: #ff930f;
+  border-color: #ff930f;
+  position: relative;
+  margin-right: 20px;
+}
+
+.answerButtonVertical {
+  background-color: #ff930f;
+  color: #ff930f;
+  border-color: #ff930f;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.buttonsBelowQuestion {
+  position: relative;
+  margin-right: 5px;
+  width: 35px;
+  height: 35px;
+}
+
+.childSelectedAnswer {
+  background-color: gray;
+  color: gray;
+  border-color: gray;
+}
+
+.childSelectedAnswer:hover {
+  background-color: gray;
+  color: gray;
+  border-color: gray;
+}
+
+.childSelectedAnswer:active {
+  background-color: gray;
+  color: gray;
+  border-color: gray;
+}
+
+.childSelectedAnswer:focus {
+  background-color: gray;
+  color: gray;
+  border-color: gray;
+}
+
+.returnToPreviewButton {
+  background-color: #ff930f;
+  color: #ff930f;
+  border-color: #ff930f;
+}
+
+.returnToPreviewButton:hover {
+  background-color: #ff930f;
+  color: #ff930f;
+  border-color: #ff930f;
+}
+.returnToPreviewButton:active {
+  background-color: #ff930f;
+  color: #ff930f;
+  border-color: #ff930f;
+}
+.returnToPreviewButton:focus {
+  background-color: #ff930f;
+  color: #ff930f;
+  border-color: #ff930f;
+}
+
+.cardButtonRow {
+  position: relative;
+  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+hr {
+  border: 0.5px solid lightgray;
+}
+
+.borderGray {
+  border: 1.4px solid #cccccc;
+}
+</style>

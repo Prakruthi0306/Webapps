@@ -1,0 +1,9 @@
+QuestionText, QuestionDescription, QuestionCatgory, QuestionSubCategory, CustomID
+Where is the ball?, Multiple choice, Cognitive
+Where is the duck?, Multiple choice, Cognitive,
+Tell me your favorite color, Multiple choice, Directions,
+Tell me what day it is today, Multiple choice, Directions,
+Where is the cat?, Multiple choice, Cognitive
+Where is the dog?, Multiple choice, XXXXX
+Where is the hyena?, Multiple choice, XXXXX,
+Where is the penguin?, multiple choice, ZZZZZ

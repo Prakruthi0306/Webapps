@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   data-name="Layer 1"
+   viewBox="0 0 78 69.75"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="noun-camera-6058797.svg"
+   width="78"
+   height="69.75"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="6.9136842"
+     inkscape:cx="47.514464"
+     inkscape:cy="59.375"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">.cls-1{fill-rule:evenodd;}</style>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath2">
+      <rect
+         style="opacity:0.5;fill:#000000"
+         id="rect3"
+         width="79.986298"
+         height="74.63459"
+         x="1.7356882"
+         y="3.1820951" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3">
+      <rect
+         style="opacity:0.5;fill:#000000"
+         id="rect4"
+         width="79.986298"
+         height="74.63459"
+         x="1.7356882"
+         y="3.1820951" />
+    </clipPath>
+  </defs>
+  <title
+     id="title1">a</title>
+  <path
+     class="cls-1"
+     d="M 38.894048,24.95185 A 15.255215,15.086919 0 1 1 23.642158,40.038768 15.267684,15.099251 0 0 1 38.894048,24.95185 Z m 0,33.641396 A 18.762285,18.555299 0 1 0 20.1301,40.038768 18.786392,18.57914 0 0 0 38.894048,58.593246 Z M 4.9945855,18.824021 v 42.42785 a 3.3657567,3.3286256 0 0 0 3.3640941,3.323694 H 69.436066 A 3.3649255,3.3278035 0 0 0 72.79351,61.251871 V 18.824021 A 3.366588,3.3294477 0 0 0 69.436066,15.500328 H 55.731144 A 1.751457,1.7321349 0 0 1 54.214933,14.63385 L 48.40362,4.6808574 H 29.384476 L 23.573164,14.63385 a 1.7456382,1.7263803 0 0 1 -1.517043,0.866478 H 8.3586796 A 3.3674192,3.3302697 0 0 0 4.9945855,18.824021 Z M 8.3586796,68.043945 H 69.436066 a 6.8753208,6.7994719 0 0 0 6.866178,-6.792074 V 18.824021 A 6.876152,6.8002941 0 0 0 69.436066,12.03277 H 56.745277 L 50.933964,2.0764891 A 1.7398194,1.7206256 0 0 0 49.416921,1.2100106 H 28.371175 A 1.7456382,1.7263803 0 0 0 26.854132,2.0764891 L 21.04282,12.03277 H 8.3586796 a 6.8769833,6.8011161 0 0 0 -6.8711644,6.791251 v 42.42785 a 6.8769833,6.8011161 0 0 0 6.8711644,6.792074 z"
+     id="path1"
+     style="stroke-width:0.826658" />
+  <text
+     x="0"
+     y="110"
+     fill="#000000"
+     font-size="5px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text1"
+     clip-path="url(#clipPath3)">Created by rukanicon</text>
+  <text
+     x="0"
+     y="115"
+     fill="#000000"
+     font-size="5px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text2"
+     clip-path="url(#clipPath2)">from the Noun Project</text>
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>a</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

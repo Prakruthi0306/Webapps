@@ -1,0 +1,47 @@
+#---------------Stage 1 (install tools and dependencies required for the frontend application)---------------
+FROM node:14-alpine3.15 as builder
+
+# install vue cli
+RUN npm install -g @vue/cli
+
+# create a temporary folder for the frontend application
+# set the current working directory to that folder
+WORKDIR /temp
+
+# copy the images folder to the subdirectory /images
+# copy the public folder to the subdirectory /public
+# copy the src folder to the subdirectory /src
+# copy the vue.config.js and package.json files to the current working directory /temp
+COPY /images ./images
+COPY /public ./public
+COPY /src ./src
+COPY vue.config.js package.json ./
+
+# install tools, dependencies, and setup a production build of the frontend application
+RUN apk update && apk add --no-cache make gcc g++ python2 && \
+    npm install && \
+    npm cache clean --force && \
+    yarn build && \
+    apk del make gcc g++ python2
+
+#---------------Stage 2 (copy the entire frontend application and serve it)---------------
+FROM node:14-alpine3.15
+
+# set environment variables needed to run the frontend application
+ENV API_ENDPOINT="http://localhost:8080/"
+
+# install tools 
+RUN apk update && apk add --no-cache curl && \
+    yarn global add serve
+
+# create a folder for the frontend application
+# set the current working directory to that folder
+WORKDIR /app/nl1cloud/frontend
+
+# copy the frontend application files from the builder stage to the current working directory /app/nl1cloud/frontend
+COPY --from=builder /temp ./
+
+EXPOSE 3000
+
+# serve the frontend application
+CMD ["serve", "-s", "dist"]

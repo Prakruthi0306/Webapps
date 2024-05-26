@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   data-name="Layer 1"
+   viewBox="0 0 33 33"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg3"
+   sodipodi:docname="left-circle.svg"
+   width="33"
+   height="33"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="18.244444"
+     inkscape:cx="18.060293"
+     inkscape:cy="22.445189"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-5"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3" />
+  <title
+     id="title1">Icon</title>
+  <path
+     d="m 16.465286,32.465286 a 16,16 0 1 1 16,-16 16,16 0 0 1 -16,16 z m 0,-29.8699998 a 13.87,13.87 0 1 0 13.87,13.8699998 13.88,13.88 0 0 0 -13.87,-13.8699998 z"
+     id="path1" />
+  <path
+     d="M 18.871439,23.661685 12.226635,17.41503 a 1.3339478,1.2540189 0 0 1 0,-1.76969 l 6.644804,-6.2466552 1.882488,1.7696902 -5.709796,5.35595 5.709796,5.36767 z"
+     id="path2"
+     style="stroke-width:1.20876" />
+  <text
+     x="0"
+     y="51"
+     fill="#000000"
+     font-size="5px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text2">Created by Studio Paw</text>
+  <text
+     x="0"
+     y="56"
+     fill="#000000"
+     font-size="5px"
+     font-weight="bold"
+     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+     id="text3">from the Noun Project</text>
+  <metadata
+     id="metadata3">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Icon</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
